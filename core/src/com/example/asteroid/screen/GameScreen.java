@@ -3,8 +3,10 @@ package com.example.asteroid.screen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.example.asteroid.stage.GameStage;
@@ -23,17 +25,20 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        AssetUtil.getInstance().getTiledMapRenderer().setView(ActorUtil.getInstance().getGameCamera());
         Gdx.input.setInputProcessor(GAME_STAGE);
     }
 
     @Override
     public void render(float delta) {
-
+        ScreenUtils.clear(Color.WHITE);
+        ActorUtil.getInstance().getGameCamera().update();
+        AssetUtil.getInstance().getTiledMapRenderer().render();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        ActorUtil.getInstance().getGameViewport().update(width, height, false);
     }
 
     @Override
@@ -53,7 +58,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        AssetUtil.getInstance().dispose();
     }
 
 }

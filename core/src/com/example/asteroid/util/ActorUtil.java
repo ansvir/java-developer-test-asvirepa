@@ -1,5 +1,6 @@
 package com.example.asteroid.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -15,8 +16,8 @@ public class ActorUtil {
     private final OrthographicCamera GAME_CAMERA;
 
     public ActorUtil() {
-        this.GAME_VIEWPORT = initAndGetGameViewport();
         this.GAME_CAMERA = initAndGetGameCamera();
+        this.GAME_VIEWPORT = initAndGetGameViewport();
     }
 
     public static ActorUtil getInstance() {
@@ -34,11 +35,11 @@ public class ActorUtil {
     }
 
     private Viewport initAndGetGameViewport() {
-        return new ScreenViewport();
+        return new ScreenViewport(GAME_CAMERA);
     }
 
     private OrthographicCamera initAndGetGameCamera() {
-        return new OrthographicCamera(GAME_VIEWPORT.getScreenWidth(), GAME_VIEWPORT.getScreenHeight());
+        return new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public StarShip getNewStarShip() {
