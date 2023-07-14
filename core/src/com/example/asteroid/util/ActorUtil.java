@@ -2,8 +2,7 @@ package com.example.asteroid.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.*;
 import com.example.asteroid.actor.ActorSprite;
 import com.example.asteroid.actor.MovableMaterial;
 import com.example.asteroid.actor.StarShip;
@@ -35,7 +34,7 @@ public class ActorUtil {
     }
 
     private Viewport initAndGetGameViewport() {
-        return new ScreenViewport(GAME_CAMERA);
+        return new FillViewport(GAME_CAMERA.viewportWidth, GAME_CAMERA.viewportHeight, GAME_CAMERA);
     }
 
     private OrthographicCamera initAndGetGameCamera() {

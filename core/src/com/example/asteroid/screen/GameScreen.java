@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -34,11 +35,18 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.WHITE);
         ActorUtil.getInstance().getGameCamera().update();
         AssetUtil.getInstance().getTiledMapRenderer().render();
+        GAME_STAGE.act(delta);
+        GAME_STAGE.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        ActorUtil.getInstance().getGameViewport().update(width, height, false);
+        Viewport viewport = ActorUtil.getInstance().getGameViewport();
+        viewport.setWorldSize(width, height);
+        viewport.update(width, height, true);
+        AssetUtil.getInstance().updateBackgroundTileMap();
+        AssetUtil.getInstance().getTiledMapRenderer()
+                .setView(viewport.getCamera().projection, viewport.getScreenX(), viewport.getScreenY(), width, height);
     }
 
     @Override

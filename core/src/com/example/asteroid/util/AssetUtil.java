@@ -20,13 +20,14 @@ import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_WIDTH;
 public class AssetUtil implements Disposable {
 
     private static AssetUtil instance;
+
     private final Array<TextureAtlas.AtlasSprite> SPRITES;
     private final TextureAtlas TEXTURE_ATLAS;
     private final SpriteBatch SPRITE_BATCH;
-    private final TiledMapRenderer TILED_MAP_RENDERER;
-    private final TiledMapTileLayer BACKGROUND_LAYER;
-    private final TiledMapTileSet BACKGROUND_TILESET;
-    private final TiledMap BACKGROUND_TILED_MAP;
+    private TiledMapRenderer TILED_MAP_RENDERER;
+    private TiledMapTileLayer BACKGROUND_LAYER;
+    private TiledMapTileSet BACKGROUND_TILESET;
+    private TiledMap BACKGROUND_TILED_MAP;
     private final Texture BACKGROUND_TILE_TEXTURE;
 
     private AssetUtil() {
@@ -116,6 +117,13 @@ public class AssetUtil implements Disposable {
 
     public TiledMapTileSet getBackgroundTileSet() {
         return this.BACKGROUND_TILESET;
+    }
+
+    public void updateBackgroundTileMap() {
+        BACKGROUND_TILESET = initAndGetBackgroundTiledMapTileSet();
+        BACKGROUND_LAYER = initAndGetBackgroundLayer();
+        BACKGROUND_TILED_MAP = initAndGetBackgroundTiledMap();
+        TILED_MAP_RENDERER = initAndGetTiledMapRenderer();
     }
 
     @Override
