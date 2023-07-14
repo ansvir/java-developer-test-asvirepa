@@ -2,6 +2,7 @@ package com.example.asteroid.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,7 +22,7 @@ public class AssetUtil implements Disposable {
 
     private static AssetUtil instance;
 
-    private final Array<TextureAtlas.AtlasSprite> SPRITES;
+    private final Array<Sprite> SPRITES;
     private final TextureAtlas TEXTURE_ATLAS;
     private final SpriteBatch SPRITE_BATCH;
     private TiledMapRenderer TILED_MAP_RENDERER;
@@ -70,11 +71,8 @@ public class AssetUtil implements Disposable {
         return new TextureAtlas("atlas/asteroid-pack.atlas");
     }
 
-    private Array<TextureAtlas.AtlasSprite> initAndGetSprites() {
-        Array<TextureAtlas.AtlasRegion> regions = TEXTURE_ATLAS.getRegions();
-        Array<TextureAtlas.AtlasSprite> result = new Array<>();
-        regions.forEach(r -> result.add(new TextureAtlas.AtlasSprite(r)));
-        return result;
+    private Array<Sprite> initAndGetSprites() {
+        return TEXTURE_ATLAS.createSprites();
     }
 
     private SpriteBatch initAndGetSpriteBatch() {
@@ -103,7 +101,7 @@ public class AssetUtil implements Disposable {
         return set;
     }
 
-    public Array<TextureAtlas.AtlasSprite> getSprites() {
+    public Array<Sprite> getSprites() {
         return this.SPRITES;
     }
 

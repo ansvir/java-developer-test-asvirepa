@@ -2,6 +2,7 @@ package com.example.asteroid.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,10 +13,12 @@ import com.example.asteroid.util.AssetUtil;
 public class GameStage extends Stage {
 
     private final IntSet KEYS;
+    private final Vector2 mousePosition;
 
     public GameStage() {
         super(ActorUtil.getInstance().getGameViewport(), AssetUtil.getInstance().getSpriteBatch());
         this.KEYS = new IntSet();
+        this.mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         addListener(initAndGetUserInputListener());
     }
 
@@ -35,11 +38,22 @@ public class GameStage extends Stage {
                 return true;
             }
 
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                super.mouseMoved(event, x, y);
+                mousePosition.set(new Vector2(x, y));
+                return false;
+            }
+
         };
     }
 
     public IntSet getKeys() {
         return KEYS;
+    }
+
+    public Vector2 getMousePosition() {
+        return mousePosition;
     }
 
 }

@@ -2,10 +2,13 @@ package com.example.asteroid.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.viewport.*;
 import com.example.asteroid.actor.ActorSprite;
 import com.example.asteroid.actor.MovableMaterial;
 import com.example.asteroid.actor.StarShip;
+
+import static com.badlogic.gdx.utils.Align.center;
 
 public class ActorUtil {
 
@@ -28,8 +31,17 @@ public class ActorUtil {
 
     private StarShip initAndGetStarShip() {
         StarShip starShip = new StarShip();
-        starShip.addActor(new MovableMaterial(10000f, 1000f, 100f, 50f));
-        starShip.addActor(new ActorSprite(AssetUtil.getInstance().getSprites().get(20)));
+        Sprite sprite = AssetUtil.getInstance().getSprites().get(70);
+        sprite.setOriginCenter();
+        sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
+        ActorSprite actorSprite = new ActorSprite(sprite);
+        MovableMaterial material = new MovableMaterial(10000f, 2f, 20f, 1f);
+        material.setOrigin(center);
+        starShip.addActor(material);
+        starShip.addActor(actorSprite);
+        starShip.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        starShip.setSize(actorSprite.getWidth(), actorSprite.getHeight());
+        starShip.setOrigin(center);
         return starShip;
     }
 

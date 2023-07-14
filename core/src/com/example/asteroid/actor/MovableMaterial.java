@@ -5,13 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class MovableMaterial extends Actor {
 
     private float weight;
-    private float speed;
+    private float maxSpeed;
     private float acceleration;
     private float deceleration;
 
-    public MovableMaterial(float weight, float speed, float acceleration, float deceleration) {
+    public MovableMaterial(float weight, float maxSpeed, float acceleration, float deceleration) {
         this.weight = weight;
-        this.speed = speed;
+        this.maxSpeed = maxSpeed;
         this.acceleration = acceleration;
         this.deceleration = deceleration;
     }
@@ -24,12 +24,12 @@ public class MovableMaterial extends Actor {
         this.weight = weight;
     }
 
-    public float getSpeed() {
-        return speed;
+    public float getMaxSpeed() {
+        return maxSpeed;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public void setMaxSpeed(float maxSpeed) {
+        this.maxSpeed = maxSpeed;
     }
 
     public float getAcceleration() {
