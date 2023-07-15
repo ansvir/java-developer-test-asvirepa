@@ -5,12 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntSet;
 import com.example.asteroid.stage.GameStage;
-
-import javax.swing.*;
 
 import static com.badlogic.gdx.Input.Keys.D;
 import static com.badlogic.gdx.Input.Keys.W;
@@ -18,37 +15,68 @@ import static com.badlogic.gdx.Input.Keys.W;
 public class StarShip extends Group {
 
     private float speed;
+    private Vector2 position;
+    private Vector2 velocity;
+    private Vector2 movement;
+    private Vector2 direction;
+    private Vector2 lastMousePosition;
+
+    public StarShip() {
+        this.position = new Vector2();
+        this.velocity = new Vector2();
+        this.movement = new Vector2();
+        this.direction = new Vector2();
+        this.lastMousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+    }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         IntSet keys = ((GameStage) getStage()).getKeys();
         Vector2 mousePosition = ((GameStage) getStage()).getMousePosition();
-        setRotation(MathUtils.atan2(mousePosition.y - getY(), mousePosition.x - getX()) * 180.0f / MathUtils.PI - 90);
         MovableMaterial starShipPhysics = (MovableMaterial) getChildren().get(0);
+        setRotation(MathUtils.lerpAngleDeg(getRotation(), MathUtils.atan2(mousePosition.y - getY(),
+                mousePosition.x - getX()) * 180.0f / MathUtils.PI - 90, 0.2f));
         if (keys.contains(Input.Keys.W)) {
+            lastMousePosition.set(mousePosition);
             if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
                 speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
             }
-            setPosition(getX() + (getX() < mousePosition.x ? speed : -speed),
-                    getY() + (getY() < mousePosition.y ? speed : -speed));
+            updatePosition(delta);
         }
         if (keys.contains(Input.Keys.A)) {
-            setX(getX() - speed);
+            lastMousePosition.set(mousePosition);
+            if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
+                speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
+            }
+            position.set(getX(), getY());
+            direction.set(mousePosition).sub(direction.cpy().rotate90(-1)).nor();
+            velocity.set(direction).scl(speed);
+            movement.set(velocity).scl(delta);
+            if (position.dst2(mousePosition) > movement.len2()) {
+                position.add(movement);
+            } else {
+                position.set(mousePosition);
+            }
+            setPosition(position.x, position.y);
         }
         if (keys.contains(D)) {
+            lastMousePosition.set(mousePosition);
             setX(getX() + speed);
         }
         if (!(keys.contains(Input.Keys.A) || keys.contains(D) || keys.contains(W))) {
             if (Float.compare(speed, 0.0f) > 0) {
                 speed -= starShipPhysics.getDeceleration() * starShipPhysics.getMaxSpeed() * delta;
-                setPosition(getX() + (getX() < mousePosition.x ? speed : -speed),
-                        getY() + (getY() < mousePosition.y ? speed : -speed));
+                position.set(getX(), getY());
+                direction.set(lastMousePosition).sub(position).nor();
+                velocity.set(direction).scl(speed);
+                movement.set(velocity).scl(delta);
+                position.add(movement);
+                setPosition(position.x, position.y);
             } else {
                 speed = 0.0f;
             }
         }
-        System.out.println(speed);
         if (getX() > Gdx.graphics.getWidth()) {
             setX(0);
         } else if (getX() < 0) {
@@ -59,7 +87,15 @@ public class StarShip extends Group {
         } else if (getY() < 0) {
             setY(Gdx.graphics.getHeight());
         }
+    }
 
+    private void updatePosition(float delta) {
+        position.set(getX(), getY());
+        direction.set(lastMousePosition).sub(position).nor();
+        velocity.set(direction).scl(speed);
+        movement.set(velocity).scl(delta);
+        position.add(movement);
+        setPosition(position.x, position.y);
     }
 
 }

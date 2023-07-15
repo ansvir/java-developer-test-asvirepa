@@ -14,12 +14,22 @@ public class GameStage extends Stage {
 
     private final IntSet KEYS;
     private final Vector2 mousePosition;
+    private int maxAsteroids;
 
     public GameStage() {
         super(ActorUtil.getInstance().getGameViewport(), AssetUtil.getInstance().getSpriteBatch());
         this.KEYS = new IntSet();
         this.mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        this.maxAsteroids = 3;
+        for (int i = 0; i < maxAsteroids; i++) {
+            addActor(ActorUtil.getInstance().getNewAsteroid());
+        }
         addListener(initAndGetUserInputListener());
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
     }
 
     private InputListener initAndGetUserInputListener() {
