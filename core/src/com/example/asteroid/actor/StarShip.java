@@ -2,6 +2,7 @@ package com.example.asteroid.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -20,6 +21,7 @@ public class StarShip extends Group {
     private Vector2 movement;
     private Vector2 direction;
     private Vector2 lastMousePosition;
+    private Vector2 lastPosition;
 
     public StarShip() {
         this.position = new Vector2();
@@ -27,6 +29,7 @@ public class StarShip extends Group {
         this.movement = new Vector2();
         this.direction = new Vector2();
         this.lastMousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        this.lastPosition = new Vector2();
     }
 
     @Override
@@ -39,6 +42,7 @@ public class StarShip extends Group {
                 mousePosition.x - getX()) * 180.0f / MathUtils.PI - 90, 0.2f));
         if (keys.contains(Input.Keys.W)) {
             lastMousePosition.set(mousePosition);
+            lastPosition.set(position);
             if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
                 speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
             }
@@ -46,6 +50,7 @@ public class StarShip extends Group {
         }
         if (keys.contains(Input.Keys.A)) {
             lastMousePosition.set(mousePosition);
+            lastPosition.set(position);
             if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
                 speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
             }
@@ -62,17 +67,13 @@ public class StarShip extends Group {
         }
         if (keys.contains(D)) {
             lastMousePosition.set(mousePosition);
+            lastPosition.set(position);
             setX(getX() + speed);
         }
         if (!(keys.contains(Input.Keys.A) || keys.contains(D) || keys.contains(W))) {
             if (Float.compare(speed, 0.0f) > 0) {
                 speed -= starShipPhysics.getDeceleration() * starShipPhysics.getMaxSpeed() * delta;
-                position.set(getX(), getY());
-                direction.set(lastMousePosition).sub(position).nor();
-                velocity.set(direction).scl(speed);
-                movement.set(velocity).scl(delta);
-                position.add(movement);
-                setPosition(position.x, position.y);
+                updatePosition(delta);
             } else {
                 speed = 0.0f;
             }
@@ -91,10 +92,12 @@ public class StarShip extends Group {
 
     private void updatePosition(float delta) {
         position.set(getX(), getY());
-        direction.set(lastMousePosition).sub(position).nor();
+        direction.set(lastMousePosition).sub(lastPosition).nor();
         velocity.set(direction).scl(speed);
         movement.set(velocity).scl(delta);
-        position.add(movement);
+        if (lastPosition.dst2(lastMousePosition) > movement.len2()) {
+            position.add(movement);
+        }
         setPosition(position.x, position.y);
     }
 
