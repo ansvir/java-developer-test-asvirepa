@@ -22,6 +22,7 @@ public class StarShip extends Group {
     private Vector2 direction;
     private Vector2 lastMousePosition;
     private Vector2 lastPosition;
+    private Vector2 lastDirection;
 
     public StarShip() {
         this.position = new Vector2();
@@ -30,6 +31,7 @@ public class StarShip extends Group {
         this.direction = new Vector2();
         this.lastMousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         this.lastPosition = new Vector2();
+        this.lastDirection = new Vector2();
     }
 
     @Override
@@ -54,26 +56,21 @@ public class StarShip extends Group {
             if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
                 speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
             }
-            position.set(getX(), getY());
-            direction.set(mousePosition).sub(direction.cpy().rotate90(-1)).nor();
-            velocity.set(direction).scl(speed);
-            movement.set(velocity).scl(delta);
-            if (position.dst2(mousePosition) > movement.len2()) {
-                position.add(movement);
-            } else {
-                position.set(mousePosition);
-            }
-            setPosition(position.x, position.y);
+            updateLeftPosition(delta);
         }
         if (keys.contains(D)) {
             lastMousePosition.set(mousePosition);
             lastPosition.set(position);
-            setX(getX() + speed);
+            if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
+                speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
+            }
+            updateRightPosition(delta);
         }
         if (!(keys.contains(Input.Keys.A) || keys.contains(D) || keys.contains(W))) {
+            lastDirection.set(direction);
             if (Float.compare(speed, 0.0f) > 0) {
                 speed -= starShipPhysics.getDeceleration() * starShipPhysics.getMaxSpeed() * delta;
-                updatePosition(delta);
+                updateStopPosition(delta);
             } else {
                 speed = 0.0f;
             }
@@ -94,6 +91,40 @@ public class StarShip extends Group {
         position.set(getX(), getY());
         direction.set(lastMousePosition).sub(lastPosition).nor();
         velocity.set(direction).scl(speed);
+        movement.set(velocity).scl(delta);
+        if (lastPosition.dst2(lastMousePosition) > movement.len2()) {
+            position.add(movement);
+        }
+        setPosition(position.x, position.y);
+    }
+
+    private void updateLeftPosition(float delta) {
+        position.set(getX(), getY());
+        Vector2 leftPosition = lastPosition.cpy().rotateAroundDeg(lastMousePosition, 90);
+        direction.set(lastMousePosition).sub(leftPosition).nor();
+        velocity.set(direction).scl(speed);
+        movement.set(velocity).scl(delta);
+        if (lastPosition.dst2(lastMousePosition) > movement.len2()) {
+            position.add(movement);
+        }
+        setPosition(position.x, position.y);
+    }
+
+    private void updateRightPosition(float delta) {
+        position.set(getX(), getY());
+        Vector2 rightPosition = lastPosition.cpy().rotateAroundDeg(lastMousePosition, -90);
+        direction.set(lastMousePosition).sub(rightPosition).nor();
+        velocity.set(direction).scl(speed);
+        movement.set(velocity).scl(delta);
+        if (lastPosition.dst2(lastMousePosition) > movement.len2()) {
+            position.add(movement);
+        }
+        setPosition(position.x, position.y);
+    }
+
+    private void updateStopPosition(float delta) {
+        position.set(getX(), getY());
+        velocity.set(lastDirection).scl(speed);
         movement.set(velocity).scl(delta);
         if (lastPosition.dst2(lastMousePosition) > movement.len2()) {
             position.add(movement);
