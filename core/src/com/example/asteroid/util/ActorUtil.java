@@ -51,7 +51,7 @@ public class ActorUtil {
         Sprite sprite = AssetUtil.getInstance().getSprites().get(randomSpriteIndex);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
-        MovableMaterial material = new MovableMaterial(10000f, 1f, 20f, 1f);
+        MovableMaterial material = new MovableMaterial(10000f, 40f, 20f, 1f);
         asteroid.addActor(material);
         asteroid.addActor(actorSprite);
         float randomX = MathUtils.random(0.0f, Gdx.graphics.getWidth());
