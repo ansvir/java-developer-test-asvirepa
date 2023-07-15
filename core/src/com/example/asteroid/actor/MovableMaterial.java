@@ -1,27 +1,28 @@
 package com.example.asteroid.actor;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class MovableMaterial extends Actor {
 
-    private float weight;
     private float maxSpeed;
     private float acceleration;
     private float deceleration;
+    private Rectangle collider;
 
-    public MovableMaterial(float weight, float maxSpeed, float acceleration, float deceleration) {
-        this.weight = weight;
+    public MovableMaterial(float maxSpeed, float acceleration, float deceleration) {
         this.maxSpeed = maxSpeed;
         this.acceleration = acceleration;
         this.deceleration = deceleration;
+        this.collider = new Rectangle();
+        debug();
     }
 
-    public float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        collider.setPosition(getX(), getY());
+        collider.setSize(getWidth(), getHeight());
     }
 
     public float getMaxSpeed() {
@@ -46,6 +47,14 @@ public class MovableMaterial extends Actor {
 
     public void setDeceleration(float deceleration) {
         this.deceleration = deceleration;
+    }
+
+    public Rectangle getCollider() {
+        return collider;
+    }
+
+    public void setCollider(Rectangle collider) {
+        this.collider = collider;
     }
 
 }

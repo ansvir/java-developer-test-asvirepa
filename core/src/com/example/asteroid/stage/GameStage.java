@@ -1,14 +1,21 @@
 package com.example.asteroid.stage;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.IntSet;
+import com.example.asteroid.actor.Asteroid;
+import com.example.asteroid.actor.MovableMaterial;
+import com.example.asteroid.actor.StarShip;
+import com.example.asteroid.storage.Cache;
 import com.example.asteroid.util.ActorUtil;
 import com.example.asteroid.util.AssetUtil;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.example.asteroid.AbstractConstant.HEALTH;
 
 public class GameStage extends Stage {
 
@@ -30,10 +37,31 @@ public class GameStage extends Stage {
     @Override
     public void act(float delta) {
         super.act(delta);
+        AtomicReference<StarShip> starShip = new AtomicReference<>();
+        getActors().forEach(a -> {
+            if (a instanceof StarShip) {
+                starShip.set(((StarShip) a));
+            }
+        });
+        getActors().forEach(a -> {
+            if (a instanceof Asteroid) {
+                if (((MovableMaterial) starShip.get().getChildren().get(0)).getCollider()
+                        .overlaps(((MovableMaterial) ((Asteroid) a).getChildren().get(0)).getCollider())) {
+                    starShip.get().remove();
+                    a.remove();
+                    long health = Cache.getInstance().getLong(HEALTH) - 1L;
+                    if (health <= 0L) {
+                        Gdx.app.exit();
+                    }
+                    Cache.getInstance().setLong(HEALTH, health);
+                }
+            }
+        });
     }
 
     private InputListener initAndGetUserInputListener() {
         return new InputListener() {
+
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 super.keyDown(event, keycode);

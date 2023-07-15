@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -30,6 +31,7 @@ public class AssetUtil implements Disposable {
     private TiledMapTileSet BACKGROUND_TILESET;
     private TiledMap BACKGROUND_TILED_MAP;
     private final Texture BACKGROUND_TILE_TEXTURE;
+    private final Skin DEFAULT_SKIN;
 
     private AssetUtil() {
         TEXTURE_ATLAS = getTextureAtlas();
@@ -40,6 +42,12 @@ public class AssetUtil implements Disposable {
         BACKGROUND_LAYER = initAndGetBackgroundLayer();
         BACKGROUND_TILED_MAP = initAndGetBackgroundTiledMap();
         TILED_MAP_RENDERER = initAndGetTiledMapRenderer();
+        DEFAULT_SKIN = initAndGetDefaultSkin();
+    }
+
+    private Skin initAndGetDefaultSkin() {
+        return new Skin(Gdx.files.internal("ui/kenvector_future.json"),
+                new TextureAtlas("ui/kenvector_future.atlas"));
     }
 
     public static AssetUtil getInstance() {
@@ -115,6 +123,10 @@ public class AssetUtil implements Disposable {
 
     public TiledMapTileSet getBackgroundTileSet() {
         return this.BACKGROUND_TILESET;
+    }
+
+    public Skin getDefaultSkin() {
+        return this.DEFAULT_SKIN;
     }
 
     public void updateBackgroundTileMap() {

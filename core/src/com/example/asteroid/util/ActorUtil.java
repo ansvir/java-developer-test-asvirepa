@@ -37,7 +37,8 @@ public class ActorUtil {
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
         actorSprite.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        MovableMaterial material = new MovableMaterial(10000f, 100f, 50f, 1f);
+        MovableMaterial material = new MovableMaterial(100f, 50f, 1f);
+        material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
         starShip.addActor(material);
         starShip.addActor(actorSprite);
         starShip.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
@@ -51,7 +52,8 @@ public class ActorUtil {
         Sprite sprite = AssetUtil.getInstance().getSprites().get(randomSpriteIndex);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
-        MovableMaterial material = new MovableMaterial(10000f, 40f, 20f, 1f);
+        MovableMaterial material = new MovableMaterial(40f, 20f, 1f);
+        material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
         asteroid.addActor(material);
         asteroid.addActor(actorSprite);
         float randomX = MathUtils.random(0.0f, Gdx.graphics.getWidth());
