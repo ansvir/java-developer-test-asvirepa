@@ -10,29 +10,29 @@ import static com.example.asteroid.AbstractConstant.HEALTH;
 
 public class UiStage extends Stage {
 
-    private float defaultPadX;
-    private float defaultPadY;
+    private float defaultMarginX;
+    private float defaultMarginY;
     private final Label lifeLabel;
 
     public UiStage() {
-        defaultPadX = Gdx.graphics.getWidth() / 20f;
-        defaultPadY = Gdx.graphics.getHeight() / 12f;
+        defaultMarginX = Gdx.graphics.getWidth() / 20f;
+        defaultMarginY = Gdx.graphics.getHeight() / 12f;
         lifeLabel = initAndGetLifeLabel();
         addActor(lifeLabel);
     }
 
     private Label initAndGetLifeLabel() {
         Label label = new Label("3", AssetUtil.getInstance().getDefaultSkin());
-        label.setPosition(Gdx.graphics.getWidth() - defaultPadX, Gdx.graphics.getHeight() - defaultPadY);
+        label.setPosition(Gdx.graphics.getWidth() - defaultMarginX, Gdx.graphics.getHeight() - defaultMarginY);
         return label;
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        defaultPadX = Gdx.graphics.getWidth() / 20f;
-        defaultPadY = Gdx.graphics.getHeight() / 12f;
-        lifeLabel.setPosition(Gdx.graphics.getWidth() - defaultPadX, Gdx.graphics.getHeight() - defaultPadY);
+        defaultMarginX = Gdx.graphics.getWidth() / 20f;
+        defaultMarginY = Gdx.graphics.getHeight() / 12f;
+        lifeLabel.setPosition(Gdx.graphics.getWidth() - defaultMarginX, Gdx.graphics.getHeight() - defaultMarginY);
         lifeLabel.setText(String.valueOf(Cache.getInstance().getLong(HEALTH)));
     }
 

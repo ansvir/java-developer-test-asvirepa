@@ -4,13 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.*;
 import com.example.asteroid.actor.ActorSprite;
 import com.example.asteroid.actor.Asteroid;
 import com.example.asteroid.actor.MovableMaterial;
 import com.example.asteroid.actor.StarShip;
 
-import static com.badlogic.gdx.utils.Align.center;
+import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_HEIGHT;
+import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_WIDTH;
 
 public class ActorUtil {
 
@@ -37,6 +39,7 @@ public class ActorUtil {
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
         actorSprite.setSize(actorSprite.getWidth(), actorSprite.getHeight());
+        actorSprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         MovableMaterial material = new MovableMaterial(100f, 50f, 1f);
         material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
         starShip.addActor(material);
@@ -52,6 +55,8 @@ public class ActorUtil {
         Sprite sprite = AssetUtil.getInstance().getSprites().get(randomSpriteIndex);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
+        actorSprite.setSize(actorSprite.getWidth(), actorSprite.getHeight());
+        actorSprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         MovableMaterial material = new MovableMaterial(40f, 20f, 1f);
         material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
         asteroid.addActor(material);
@@ -64,11 +69,12 @@ public class ActorUtil {
     }
 
     private Viewport initAndGetGameViewport() {
-        return new FillViewport(GAME_CAMERA.viewportWidth, GAME_CAMERA.viewportHeight, GAME_CAMERA);
+        return new FitViewport(GAME_CAMERA.viewportWidth, GAME_CAMERA.viewportHeight, GAME_CAMERA);
     }
 
     private OrthographicCamera initAndGetGameCamera() {
-        return new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return new OrthographicCamera(Gdx.graphics.getWidth() / (float) BACKGROUND_TILE_WIDTH,
+                Gdx.graphics.getHeight() / (float) BACKGROUND_TILE_HEIGHT);
     }
 
     public StarShip getNewStarShip() {
