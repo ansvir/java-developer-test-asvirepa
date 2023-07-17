@@ -21,12 +21,15 @@ public class GameStage extends Stage {
 
     private final IntSet KEYS;
     private final Vector2 mousePosition;
+    private final Vector2 touchDownPosition;
+    private boolean isTouchDown;
     private int maxAsteroids;
 
     public GameStage() {
         super(ActorUtil.getInstance().getGameViewport(), AssetUtil.getInstance().getSpriteBatch());
         this.KEYS = new IntSet();
         this.mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        this.touchDownPosition = new Vector2();
         this.maxAsteroids = 3;
         for (int i = 0; i < maxAsteroids; i++) {
             addActor(ActorUtil.getInstance().getNewAsteroid());
@@ -51,7 +54,8 @@ public class GameStage extends Stage {
                     a.remove();
                     long health = Cache.getInstance().getLong(HEALTH) - 1L;
                     if (health <= 0L) {
-                        Gdx.app.exit();
+                        addActor(ActorUtil.getInstance().getNewStarShip());
+                        addActor(ActorUtil.getInstance().getNewAsteroid());
                     }
                     Cache.getInstance().setLong(HEALTH, health);
                 }
@@ -80,9 +84,32 @@ public class GameStage extends Stage {
             public boolean mouseMoved(InputEvent event, float x, float y) {
                 super.mouseMoved(event, x, y);
                 mousePosition.set(new Vector2(x, y));
+                return true;
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (!isTouchDown) {
+                    super.touchDown(event, x, y, pointer, button);
+                    touchDownPosition.set(new Vector2(x, y));
+                    isTouchDown = true;
+                    return true;
+                }
                 return false;
             }
 
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                super.touchDragged(event, x, y, pointer);
+                touchDownPosition.set(new Vector2(x, y));
+                mousePosition.set(new Vector2(x, y));
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                isTouchDown = false;
+            }
         };
     }
 
@@ -92,6 +119,14 @@ public class GameStage extends Stage {
 
     public Vector2 getMousePosition() {
         return mousePosition;
+    }
+
+    public Vector2 getTouchDownPosition() {
+        return touchDownPosition;
+    }
+
+    public boolean isTouchDown() {
+        return isTouchDown;
     }
 
 }

@@ -15,7 +15,6 @@ public class MovableMaterial extends Actor {
         this.acceleration = acceleration;
         this.deceleration = deceleration;
         this.collider = new Rectangle();
-        debug();
     }
 
     @Override

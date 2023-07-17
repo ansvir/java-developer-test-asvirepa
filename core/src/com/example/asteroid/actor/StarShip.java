@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntSet;
 import com.example.asteroid.stage.GameStage;
+import com.example.asteroid.util.ActorUtil;
 
 import static com.badlogic.gdx.Input.Keys.D;
 import static com.badlogic.gdx.Input.Keys.W;
@@ -23,6 +24,8 @@ public class StarShip extends Group {
     private Vector2 lastMousePosition;
     private Vector2 lastPosition;
     private Vector2 lastDirection;
+    private Vector2 lastShootPosition;
+    private boolean isShot;
 
     public StarShip() {
         this.position = new Vector2();
@@ -32,13 +35,15 @@ public class StarShip extends Group {
         this.lastMousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         this.lastPosition = new Vector2();
         this.lastDirection = new Vector2();
+        this.lastShootPosition = new Vector2();
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        IntSet keys = ((GameStage) getStage()).getKeys();
-        Vector2 mousePosition = ((GameStage) getStage()).getMousePosition();
+        GameStage stage = (GameStage) getStage();
+        IntSet keys = stage.getKeys();
+        Vector2 mousePosition = stage.getMousePosition();
         MovableMaterial starShipPhysics = (MovableMaterial) getChildren().get(0);
         setRotation(MathUtils.lerpAngleDeg(getRotation(), MathUtils.atan2(mousePosition.y - getY(),
                 mousePosition.x - getX()) * 180.0f / MathUtils.PI - 90, 0.2f));
@@ -84,6 +89,15 @@ public class StarShip extends Group {
             setY(0);
         } else if (getY() < 0) {
             setY(Gdx.graphics.getHeight());
+        }
+        if (stage.isTouchDown() && !isShot) {
+            isShot = true;
+            Bullet bullet = ActorUtil.getInstance().getNewBullet(stage.getTouchDownPosition());
+            bullet.setPosition(getX(), getY());
+            bullet.setRotation(getRotation());
+            stage.addActor(bullet);
+        } else {
+            isShot = false;
         }
     }
 
