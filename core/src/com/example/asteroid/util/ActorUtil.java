@@ -34,11 +34,11 @@ public class ActorUtil {
         Sprite sprite = AssetUtil.getInstance().getSprites().get(70);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
-        actorSprite.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        MovableMaterial material = new MovableMaterial(100f, 50f, 1f);
+        actorSprite.setSize(sprite.getWidth(), sprite.getHeight());
+        MovableMaterial material = new MovableMaterial(new Vector2(sprite.getWidth(), sprite.getHeight()), 100f, 50f, 1f);
         material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        starShip.addActor(material);
         starShip.addActor(actorSprite);
+        starShip.addActor(material);
         starShip.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
         starShip.setSize(sprite.getWidth(), sprite.getHeight());
         return starShip;
@@ -50,10 +50,11 @@ public class ActorUtil {
         Sprite sprite = AssetUtil.getInstance().getSprites().get(randomSpriteIndex);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
-        MovableMaterial material = new MovableMaterial(40f, 20f, 1f);
+        actorSprite.setSize(sprite.getWidth(), sprite.getHeight());
+        MovableMaterial material = new MovableMaterial(new Vector2(sprite.getWidth(), sprite.getHeight()),40f, 20f, 1f);
         material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        asteroid.addActor(material);
         asteroid.addActor(actorSprite);
+        asteroid.addActor(material);
         float randomX = MathUtils.random(0.0f, Gdx.graphics.getWidth());
         float randomY = MathUtils.random(0.0f, Gdx.graphics.getHeight());
         asteroid.setPosition(randomX, randomY);
@@ -66,10 +67,11 @@ public class ActorUtil {
         Sprite sprite = AssetUtil.getInstance().getSprites().get(150);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
-        MovableMaterial material = new MovableMaterial(400f, 200f, 1f);
+        actorSprite.setSize(sprite.getWidth(), sprite.getHeight());
+        MovableMaterial material = new MovableMaterial(new Vector2(sprite.getWidth(), sprite.getHeight()),400f, 200f, 1f);
         material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        bullet.addActor(material);
         bullet.addActor(actorSprite);
+        bullet.addActor(material);
         bullet.setSize(sprite.getWidth(), sprite.getHeight());
         return bullet;
     }

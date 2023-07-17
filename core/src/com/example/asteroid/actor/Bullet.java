@@ -1,19 +1,16 @@
 package com.example.asteroid.actor;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.example.asteroid.stage.GameStage;
 
 public class Bullet extends Group {
 
     private float speed;
-    private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 movement;
-    private Vector2 direction;
+    private final Vector2 position;
+    private final Vector2 velocity;
+    private final Vector2 movement;
+    private final Vector2 direction;
 
     public Bullet(Vector2 targetPosition, Vector2 position) {
         setPosition(position.x, position.y);
@@ -31,7 +28,7 @@ public class Bullet extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        MovableMaterial bulletPhysics = (MovableMaterial) getChildren().get(0);
+        MovableMaterial bulletPhysics = (MovableMaterial) getChildren().get(1);
         if (Float.compare(speed, bulletPhysics.getMaxSpeed()) <= 0) {
             speed = speed + bulletPhysics.getAcceleration() * bulletPhysics.getMaxSpeed() * delta;
         }

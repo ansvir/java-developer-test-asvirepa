@@ -17,6 +17,7 @@ import com.example.asteroid.util.ActorUtil;
 import com.example.asteroid.util.AssetUtil;
 
 import static com.example.asteroid.AbstractConstant.HEALTH;
+import static com.example.asteroid.AbstractConstant.SCORE;
 
 public class GameScreen implements Screen {
 
@@ -82,6 +83,7 @@ public class GameScreen implements Screen {
     private void initCache() {
         Cache cache = Cache.getInstance();
         cache.setLong(HEALTH, 3L);
+        cache.setLong(SCORE, 0L);
     }
 
 }

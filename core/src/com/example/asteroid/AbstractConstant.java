@@ -7,5 +7,6 @@ public final class AbstractConstant {
 
     // cache
     public static final String HEALTH = "HEALTH";
+    public static final String SCORE = "SCORE";
 
 }

@@ -33,7 +33,7 @@ public class Asteroid extends Group {
     public void act(float delta) {
         super.act(delta);
         setRotation(rotateClockwise ? getRotation() + speed * delta : getRotation() - speed * delta);
-        MovableMaterial asteroidPhysics = (MovableMaterial) getChildren().get(0);
+        MovableMaterial asteroidPhysics = (MovableMaterial) getChildren().get(1);
         if (Float.compare(speed, asteroidPhysics.getMaxSpeed()) <= 0) {
             speed = speed + asteroidPhysics.getAcceleration() * asteroidPhysics.getMaxSpeed() * delta;
         }
