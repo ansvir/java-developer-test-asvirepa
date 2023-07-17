@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,7 +16,7 @@ import com.example.asteroid.storage.Cache;
 import com.example.asteroid.util.ActorUtil;
 import com.example.asteroid.util.AssetUtil;
 
-import static com.example.asteroid.AbstractConstant.*;
+import static com.example.asteroid.AbstractConstant.HEALTH;
 
 public class GameScreen implements Screen {
 
@@ -42,6 +41,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.WHITE);
+        ActorUtil.getInstance().getGameCamera().update();
         AssetUtil.getInstance().getTiledMapRenderer().render();
         GAME_STAGE.act(delta);
         GAME_STAGE.draw();
@@ -52,14 +52,11 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         Viewport viewport = ActorUtil.getInstance().getGameViewport();
-//        viewport.setWorldSize(width, height);
-//        viewport.update(width, height, true);
+        viewport.setWorldSize(width, height);
+        viewport.update(width, height, true);
         AssetUtil.getInstance().updateBackgroundTileMap();
-        ((OrthographicCamera) viewport.getCamera()).setToOrtho(false, width / (float) BACKGROUND_TILE_WIDTH,
-                height / (float) BACKGROUND_TILE_HEIGHT);
-        viewport.getCamera().update();
-//        AssetUtil.getInstance().getTiledMapRenderer()
-//                .setView(viewport.getCamera().combined, viewport.getScreenX(), viewport.getScreenY(), width, height);
+        AssetUtil.getInstance().getTiledMapRenderer()
+                .setView(viewport.getCamera().projection, viewport.getScreenX(), viewport.getScreenY(), width, height);
     }
 
     @Override

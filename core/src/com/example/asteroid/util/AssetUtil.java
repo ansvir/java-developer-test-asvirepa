@@ -16,10 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static com.example.asteroid.AbstractConstant.*;
+import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_HEIGHT;
+import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_WIDTH;
 
 public class AssetUtil implements Disposable {
 
@@ -60,15 +58,14 @@ public class AssetUtil implements Disposable {
     }
 
     private TiledMapTileLayer initAndGetBackgroundLayer() {
-        TiledMapTileLayer layer = new TiledMapTileLayer(Gdx.graphics.getWidth() / BACKGROUND_TILE_WIDTH + 1,
-                Gdx.graphics.getHeight() / BACKGROUND_TILE_HEIGHT + 1,
-                BACKGROUND_TILE_WIDTH, BACKGROUND_TILE_HEIGHT);
+        TiledMapTileLayer layer = new TiledMapTileLayer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
+                1, 1);
         int id = 0;
         for (int w = 0; w < Gdx.graphics.getWidth() / BACKGROUND_TILE_WIDTH + 1; w++) {
             for (int h = 0; h < Gdx.graphics.getHeight() / BACKGROUND_TILE_HEIGHT + 1; h++, id++) {
                 TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
                 cell.setTile(BACKGROUND_TILESET.getTile(id));
-                layer.setCell(w, h, cell);
+                layer.setCell(BACKGROUND_TILE_WIDTH * w, BACKGROUND_TILE_HEIGHT * h, cell);
             }
         }
         return layer;
@@ -91,7 +88,7 @@ public class AssetUtil implements Disposable {
     }
 
     private TiledMapRenderer initAndGetTiledMapRenderer() {
-        return new OrthogonalTiledMapRenderer(BACKGROUND_TILED_MAP, 1f / BACKGROUND_TILE_WIDTH, SPRITE_BATCH);
+        return new OrthogonalTiledMapRenderer(BACKGROUND_TILED_MAP, SPRITE_BATCH);
     }
 
     private TiledMap initAndGetBackgroundTiledMap() {

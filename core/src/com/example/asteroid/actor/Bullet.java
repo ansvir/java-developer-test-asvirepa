@@ -20,7 +20,7 @@ public class Bullet extends Group {
         this.movement = new Vector2();
         this.direction = new Vector2();
         Vector2 targetAngle = new Vector2(MathUtils.cos(targetPosition.angleRad()), MathUtils.sin(targetPosition.angleRad()));
-        direction.set(targetAngle).nor();
+        direction.set(targetPosition).nor();
         velocity.set(direction).scl(speed);
         movement.set(velocity).scl(Gdx.graphics.getDeltaTime());
         position.add(movement);
