@@ -92,10 +92,10 @@ public class StarShip extends Group {
         }
         if (stage.isTouchDown() && !isShot) {
             isShot = true;
-            Bullet bullet = ActorUtil.getInstance().getNewBullet(stage.getTouchDownPosition());
-            bullet.setPosition(getX(), getY());
+            Bullet bullet = ActorUtil.getInstance().getNewBullet(stage.getTouchDownPosition(), new Vector2(getX(), getY()));
             bullet.setRotation(getRotation());
             stage.addActor(bullet);
+            bullet.toBack();
         } else {
             isShot = false;
         }

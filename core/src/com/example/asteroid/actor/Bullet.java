@@ -3,6 +3,7 @@ package com.example.asteroid.actor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.example.asteroid.stage.GameStage;
 
@@ -14,19 +15,17 @@ public class Bullet extends Group {
     private Vector2 movement;
     private Vector2 direction;
 
-    public Bullet(Vector2 targetPosition) {
+    public Bullet(Vector2 targetPosition, Vector2 position) {
+        setPosition(position.x, position.y);
         this.position = new Vector2();
         this.velocity = new Vector2();
         this.movement = new Vector2();
         this.direction = new Vector2();
-        Vector2 targetAngle = new Vector2(MathUtils.cos(targetPosition.angleRad()), MathUtils.sin(targetPosition.angleRad()));
-        direction.set(targetPosition).nor();
+        direction.set(targetPosition).sub(position).nor();
         velocity.set(direction).scl(speed);
         movement.set(velocity).scl(Gdx.graphics.getDeltaTime());
         position.add(movement);
         setPosition(position.x, position.y);
-//        Vector2 positionDiff = targetPosition.cpy().sub(getX(), getY());
-//        direction.set(positionDiff).nor();
     }
 
     @Override

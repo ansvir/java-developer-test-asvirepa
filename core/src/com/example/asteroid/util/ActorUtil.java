@@ -61,12 +61,12 @@ public class ActorUtil {
         return asteroid;
     }
 
-    public Bullet initAndGetBullet(Vector2 targetPosition) {
-        Bullet bullet = new Bullet(targetPosition);
-        Sprite sprite = AssetUtil.getInstance().getSprites().get(65);
+    public Bullet initAndGetBullet(Vector2 targetPosition, Vector2 position) {
+        Bullet bullet = new Bullet(targetPosition, position);
+        Sprite sprite = AssetUtil.getInstance().getSprites().get(150);
         sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
         ActorSprite actorSprite = new ActorSprite(sprite);
-        MovableMaterial material = new MovableMaterial(200f, 100f, 1f);
+        MovableMaterial material = new MovableMaterial(400f, 200f, 1f);
         material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
         bullet.addActor(material);
         bullet.addActor(actorSprite);
@@ -90,8 +90,8 @@ public class ActorUtil {
         return initAndGetAsteroid();
     }
 
-    public Bullet getNewBullet(Vector2 targetPosition) {
-        return initAndGetBullet(targetPosition);
+    public Bullet getNewBullet(Vector2 targetPosition, Vector2 position) {
+        return initAndGetBullet(targetPosition, position);
     }
 
     public Viewport getGameViewport() {
