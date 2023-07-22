@@ -16,6 +16,8 @@ Sub-Packages:
    - Enter in command prompt on Windows `gradlew.bat dist`
    - Enter in terminal on *nix `./gradlew dist`
    At [bin](bin) folder executable JAR named `desktop-1.0.jar` will be generated
+## Change Log
+1) Refactor code: extract code duplication to separate methods, remove extra Actor's classes and make all Actor's inherit common MovableSpriteActor. Add ServiceUtil class to handle search for actors within Stage
 # [RUS] Базовая версия игры Asteroid версии 1.0
 ## [Исходное задание](./Game_Developer_тестовое_задание(1)(1).pdf)
 ## [Github репозиторий](https://github.com/ansvir/java-developer-test-asvirepa)
@@ -34,3 +36,5 @@ Sub-Packages:
    - Введите на Windows `gradlew.bat dist`
    - Введите на *nix `./gradlew dist`
    В папке [bin](bin) будет создан исполняемый JAR `desktop-1.0.jar`
+## Change Log
+См. в англоязычной версии

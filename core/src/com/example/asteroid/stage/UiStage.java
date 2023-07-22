@@ -1,6 +1,7 @@
 package com.example.asteroid.stage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.example.asteroid.storage.Cache;
@@ -11,37 +12,34 @@ import static com.example.asteroid.AbstractConstant.SCORE;
 
 public class UiStage extends Stage {
 
+    private static final float PAD_X = 20f;
+    private static final float PAD_Y = 12f;
+
     private float defaultPadX;
     private float defaultPadY;
     private final Label lifeLabel;
     private final Label scoreLabel;
 
     public UiStage() {
-        defaultPadX = Gdx.graphics.getWidth() / 20f;
-        defaultPadY = Gdx.graphics.getHeight() / 12f;
-        lifeLabel = initAndGetLifeLabel();
-        scoreLabel = initAndGetScoreLabel();
+        defaultPadX = Gdx.graphics.getWidth() / PAD_X;
+        defaultPadY = Gdx.graphics.getHeight() / PAD_Y;
+        lifeLabel = initAndGetLabel("3", new Vector2(Gdx.graphics.getWidth() - defaultPadX, Gdx.graphics.getHeight() - defaultPadY));
+        scoreLabel = initAndGetLabel("0", new Vector2(defaultPadX, Gdx.graphics.getHeight() - defaultPadY));
         addActor(lifeLabel);
         addActor(scoreLabel);
     }
 
-    private Label initAndGetLifeLabel() {
-        Label label = new Label("3", AssetUtil.getInstance().getDefaultSkin());
-        label.setPosition(Gdx.graphics.getWidth() - defaultPadX, Gdx.graphics.getHeight() - defaultPadY);
-        return label;
-    }
-
-    private Label initAndGetScoreLabel() {
-        Label label = new Label("0", AssetUtil.getInstance().getDefaultSkin());
-        label.setPosition(defaultPadX, Gdx.graphics.getHeight() - defaultPadY);
+    private Label initAndGetLabel(String text, Vector2 position) {
+        Label label = new Label(text, AssetUtil.getInstance().getDefaultSkin());
+        label.setPosition(position.x, position.y);
         return label;
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        defaultPadX = Gdx.graphics.getWidth() / 20f;
-        defaultPadY = Gdx.graphics.getHeight() / 12f;
+        defaultPadX = Gdx.graphics.getWidth() / PAD_X;
+        defaultPadY = Gdx.graphics.getHeight() / PAD_Y;
         lifeLabel.setPosition(Gdx.graphics.getWidth() - defaultPadX, Gdx.graphics.getHeight() - defaultPadY);
         lifeLabel.setText(String.valueOf(Cache.getInstance().getLong(HEALTH)));
         scoreLabel.setPosition(defaultPadX, Gdx.graphics.getHeight() - defaultPadY);

@@ -2,15 +2,15 @@ package com.example.asteroid.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.*;
-import com.example.asteroid.actor.*;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.example.asteroid.actor.Asteroid;
+import com.example.asteroid.actor.Bullet;
+import com.example.asteroid.actor.StarShip;
 
-import static com.badlogic.gdx.utils.Align.center;
-
-public class ActorUtil {
+public final class ActorUtil {
 
     private static ActorUtil instance;
 
@@ -29,53 +29,6 @@ public class ActorUtil {
         return instance;
     }
 
-    private StarShip initAndGetStarShip() {
-        StarShip starShip = new StarShip();
-        Sprite sprite = AssetUtil.getInstance().getSprites().get(70);
-        sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
-        ActorSprite actorSprite = new ActorSprite(sprite);
-        actorSprite.setSize(sprite.getWidth(), sprite.getHeight());
-        MovableMaterial material = new MovableMaterial(new Vector2(sprite.getWidth(), sprite.getHeight()), 100f, 50f, 1f);
-        material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        starShip.addActor(actorSprite);
-        starShip.addActor(material);
-        starShip.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
-        starShip.setSize(sprite.getWidth(), sprite.getHeight());
-        return starShip;
-    }
-
-    private Asteroid initAndGetAsteroid() {
-        Asteroid asteroid = new Asteroid();
-        int randomSpriteIndex = MathUtils.random(190, 200);
-        Sprite sprite = AssetUtil.getInstance().getSprites().get(randomSpriteIndex);
-        sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
-        ActorSprite actorSprite = new ActorSprite(sprite);
-        actorSprite.setSize(sprite.getWidth(), sprite.getHeight());
-        MovableMaterial material = new MovableMaterial(new Vector2(sprite.getWidth(), sprite.getHeight()),40f, 20f, 1f);
-        material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        asteroid.addActor(actorSprite);
-        asteroid.addActor(material);
-        float randomX = MathUtils.random(0.0f, Gdx.graphics.getWidth());
-        float randomY = MathUtils.random(0.0f, Gdx.graphics.getHeight());
-        asteroid.setPosition(randomX, randomY);
-        asteroid.setSize(sprite.getWidth(), sprite.getHeight());
-        return asteroid;
-    }
-
-    public Bullet initAndGetBullet(Vector2 targetPosition, Vector2 position) {
-        Bullet bullet = new Bullet(targetPosition, position);
-        Sprite sprite = AssetUtil.getInstance().getSprites().get(150);
-        sprite.setPosition(-sprite.getWidth() / 2f, -sprite.getHeight() / 2f);
-        ActorSprite actorSprite = new ActorSprite(sprite);
-        actorSprite.setSize(sprite.getWidth(), sprite.getHeight());
-        MovableMaterial material = new MovableMaterial(new Vector2(sprite.getWidth(), sprite.getHeight()),400f, 200f, 1f);
-        material.setSize(actorSprite.getWidth(), actorSprite.getHeight());
-        bullet.addActor(actorSprite);
-        bullet.addActor(material);
-        bullet.setSize(sprite.getWidth(), sprite.getHeight());
-        return bullet;
-    }
-
     private Viewport initAndGetGameViewport() {
         return new FillViewport(GAME_CAMERA.viewportWidth, GAME_CAMERA.viewportHeight, GAME_CAMERA);
     }
@@ -85,15 +38,17 @@ public class ActorUtil {
     }
 
     public StarShip getNewStarShip() {
-        return initAndGetStarShip();
+        StarShip starShip = new StarShip( 100f, 50f, 1f, 70);
+        starShip.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        return starShip;
     }
 
     public Asteroid getNewAsteroid() {
-        return initAndGetAsteroid();
+        return new Asteroid(40f, 20f, 1f, MathUtils.random(190, 200));
     }
 
     public Bullet getNewBullet(Vector2 targetPosition, Vector2 position) {
-        return initAndGetBullet(targetPosition, position);
+        return new Bullet(targetPosition, position, 400f, 200f, 1f, 150);
     }
 
     public Viewport getGameViewport() {

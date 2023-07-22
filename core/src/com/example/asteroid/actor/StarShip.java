@@ -2,9 +2,8 @@ package com.example.asteroid.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntSet;
@@ -14,23 +13,14 @@ import com.example.asteroid.util.ActorUtil;
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.badlogic.gdx.Input.Keys.*;
 
-public class StarShip extends Group {
+public class StarShip extends MovableSpriteActor {
 
-    private float speed;
-    private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 movement;
-    private Vector2 direction;
     private Vector2 lastMousePosition;
     private Vector2 lastPosition;
     private Vector2 lastDirection;
-    private boolean isShot;
 
-    public StarShip() {
-        this.position = new Vector2();
-        this.velocity = new Vector2();
-        this.movement = new Vector2();
-        this.direction = new Vector2();
+    public StarShip(float maxSpeed, float acceleration, float deceleration, int spriteIndex) {
+        super(maxSpeed, acceleration, deceleration, spriteIndex);
         this.lastMousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         this.lastPosition = new Vector2();
         this.lastDirection = new Vector2();
@@ -42,62 +32,49 @@ public class StarShip extends Group {
         GameStage stage = (GameStage) getStage();
         IntSet keys = stage.getKeys();
         Vector2 mousePosition = stage.getMousePosition();
-        MovableMaterial starShipPhysics = (MovableMaterial) getChildren().get(1);
         setRotation(MathUtils.lerpAngleDeg(getRotation(), MathUtils.atan2(mousePosition.y - getY(),
                 mousePosition.x - getX()) * 180.0f / MathUtils.PI - 90, 0.2f));
         if (keys.contains(Input.Keys.W)) {
-            lastMousePosition.set(mousePosition);
-            lastPosition.set(position);
-            if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
-                speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
-            }
+            adjustSpeed(delta);
             updatePosition(delta);
         }
         if (keys.contains(Input.Keys.A)) {
-            lastMousePosition.set(mousePosition);
-            lastPosition.set(position);
-            if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
-                speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
-            }
+            adjustSpeed(delta);
             updateLeftPosition(delta);
         }
         if (keys.contains(D)) {
-            lastMousePosition.set(mousePosition);
-            lastPosition.set(position);
-            if (Float.compare(speed, starShipPhysics.getMaxSpeed()) <= 0) {
-                speed = speed + starShipPhysics.getAcceleration() * starShipPhysics.getMaxSpeed() * delta;
-            }
+            adjustSpeed(delta);
             updateRightPosition(delta);
         }
         if (!(keys.contains(Input.Keys.A) || keys.contains(D) || keys.contains(W))) {
-            lastDirection.set(direction);
-            if (Float.compare(speed, 0.0f) > 0) {
-                speed -= starShipPhysics.getDeceleration() * starShipPhysics.getMaxSpeed() * delta;
-                updateStopPosition(delta);
-            } else {
-                speed = 0.0f;
-            }
+            reduceSpeed(delta);
         }
-        if (getX() > Gdx.graphics.getWidth()) {
-            setX(0);
-        } else if (getX() < 0) {
-            setX(Gdx.graphics.getWidth());
-        }
-        if (getY() > Gdx.graphics.getHeight()) {
-            setY(0);
-        } else if (getY() < 0) {
-            setY(Gdx.graphics.getHeight());
-        }
-        if (stage.isTouchDown() && Gdx.input.isButtonJustPressed(LEFT)) {
-            Bullet bullet = ActorUtil.getInstance().getNewBullet(stage.getTouchDownPosition(),
-                    new Vector2(getX(), getY()));
-            bullet.setRotation(getRotation());
-            stage.addActor(bullet);
-            bullet.toBack();
+        relocateIfAtEdge();
+        handleLeftButtonPressed();
+    }
+
+    private void adjustSpeed(float delta) {
+        GameStage stage = (GameStage) getStage();
+        Vector2 mousePosition = stage.getMousePosition();
+        lastMousePosition.set(mousePosition);
+        lastPosition.set(position);
+        if (Float.compare(speed, getMaxSpeed()) <= 0) {
+            speed += getAcceleration() * getMaxSpeed() * delta;
         }
     }
 
-    private void updatePosition(float delta) {
+    private void reduceSpeed(float delta) {
+        lastDirection.set(direction);
+        if (Float.compare(speed, 0.0f) > 0) {
+            speed -= getDeceleration() * getMaxSpeed() * delta;
+            updateStopPosition(delta);
+        } else {
+            speed = 0.0f;
+        }
+    }
+
+    @Override
+    protected void updatePosition(float delta) {
         position.set(getX(), getY());
         direction.set(lastMousePosition).sub(lastPosition).nor();
         velocity.set(direction).scl(speed);
@@ -140,6 +117,17 @@ public class StarShip extends Group {
             position.add(movement);
         }
         setPosition(position.x, position.y);
+    }
+
+    private void handleLeftButtonPressed() {
+        GameStage stage = (GameStage) getStage();
+        if (stage.isTouchDown() && Gdx.input.isButtonJustPressed(LEFT)) {
+            Bullet bullet = ActorUtil.getInstance().getNewBullet(stage.getTouchDownPosition(),
+                    new Vector2(getX(), getY()));
+            bullet.setRotation(getRotation());
+            stage.addActor(bullet);
+            bullet.toBack();
+        }
     }
 
 }

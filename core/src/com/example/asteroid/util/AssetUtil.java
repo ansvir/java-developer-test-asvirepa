@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Disposable;
 import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_HEIGHT;
 import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_WIDTH;
 
-public class AssetUtil implements Disposable {
+public final class AssetUtil implements Disposable {
 
     private static AssetUtil instance;
 
@@ -119,10 +119,6 @@ public class AssetUtil implements Disposable {
 
     public TiledMapRenderer getTiledMapRenderer() {
         return this.TILED_MAP_RENDERER;
-    }
-
-    public TiledMapTileSet getBackgroundTileSet() {
-        return this.BACKGROUND_TILESET;
     }
 
     public Skin getDefaultSkin() {

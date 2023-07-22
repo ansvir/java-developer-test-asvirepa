@@ -2,48 +2,25 @@ package com.example.asteroid.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
 
-public class Bullet extends Group {
+public class Bullet extends MovableSpriteActor {
 
-    private float speed;
-    private final Vector2 position;
-    private final Vector2 velocity;
-    private final Vector2 movement;
-    private final Vector2 direction;
-
-    public Bullet(Vector2 targetPosition, Vector2 position) {
+    public Bullet(Vector2 targetPosition, Vector2 position, float maxSpeed, float acceleration, float deceleration, int spriteIndex) {
+        super(maxSpeed, acceleration, deceleration, spriteIndex);
         setPosition(position.x, position.y);
-        this.position = new Vector2();
-        this.velocity = new Vector2();
-        this.movement = new Vector2();
-        this.direction = new Vector2();
         direction.set(targetPosition).sub(position).nor();
-        velocity.set(direction).scl(speed);
-        movement.set(velocity).scl(Gdx.graphics.getDeltaTime());
-        position.add(movement);
-        setPosition(position.x, position.y);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        MovableMaterial bulletPhysics = (MovableMaterial) getChildren().get(1);
-        if (Float.compare(speed, bulletPhysics.getMaxSpeed()) <= 0) {
-            speed = speed + bulletPhysics.getAcceleration() * bulletPhysics.getMaxSpeed() * delta;
+        if (Float.compare(speed, getMaxSpeed()) <= 0) {
+            speed += getAcceleration() * getMaxSpeed() * delta;
         }
         updatePosition(delta);
         if (getX() > Gdx.graphics.getWidth() || getX() < 0 || getY() > Gdx.graphics.getHeight() || getY() < 0) {
             remove();
         }
-    }
-
-    private void updatePosition(float delta) {
-        position.set(getX(), getY());
-        velocity.set(direction).scl(speed);
-        movement.set(velocity).scl(delta);
-        position.add(movement);
-        setPosition(position.x, position.y);
     }
 
 }

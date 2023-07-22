@@ -21,7 +21,7 @@ public class Cache {
     }
 
     public void setValue(String key, Object o) {
-        CACHE.put(key, o);
+        put(key, o);
     }
 
     public Object getValue(String key) {
@@ -29,11 +29,15 @@ public class Cache {
     }
 
     public void setLong(String key, Long o) {
-        CACHE.put(key, o);
+        put(key, o);
     }
 
     public Long getLong(String key) {
         return (Long) CACHE.get(key);
+    }
+
+    private void put(String key, Object o) {
+        CACHE.put(key, o);
     }
 
 }

@@ -2,21 +2,19 @@ package com.example.asteroid.stage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntSet;
 import com.example.asteroid.actor.Asteroid;
 import com.example.asteroid.actor.Bullet;
-import com.example.asteroid.actor.MovableMaterial;
+import com.example.asteroid.actor.MovableSpriteActor;
 import com.example.asteroid.actor.StarShip;
 import com.example.asteroid.storage.Cache;
 import com.example.asteroid.util.ActorUtil;
 import com.example.asteroid.util.AssetUtil;
+import com.example.asteroid.util.ServiceUtil;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.example.asteroid.AbstractConstant.HEALTH;
@@ -24,6 +22,7 @@ import static com.example.asteroid.AbstractConstant.SCORE;
 
 public class GameStage extends Stage {
 
+    private static final int COMPLEXITY_LEVEL = 1500;
     private final IntSet KEYS;
     private final Vector2 mousePosition;
     private final Vector2 touchDownPosition;
@@ -45,58 +44,71 @@ public class GameStage extends Stage {
     @Override
     public void act(float delta) {
         super.act(delta);
-        AtomicReference<StarShip> starShip = new AtomicReference<>();
-        getActors().forEach(a -> {
-            if (a instanceof StarShip) {
-                starShip.set(((StarShip) a));
-            }
-        });
-        Array<Actor> actors = getActors();
-        boolean isStarShipDestroyed = false;
-        for (int i = 0; i < actors.size; i++) {
-            if (!(actors.get(i) instanceof StarShip)) {
-                if (actors.get(i) instanceof Asteroid) {
-                    MovableMaterial mm1 = ((MovableMaterial) starShip.get().getChildren().get(1));
-                    MovableMaterial mm2 = ((MovableMaterial) ((Asteroid) actors.get(i)).getChildren().get(1));
-                    int finalI = i;
-                    if (mm1.getCollider().overlaps(mm2.getCollider())) {
-                        actors.get(i).remove();
-                        isStarShipDestroyed = true;
-                        long health = Cache.getInstance().getLong(HEALTH) - 1L;
-                        if (health <= 0L) {
-                            restartGame();
-                        } else {
-                            Cache.getInstance().setLong(HEALTH, health);
-                        }
-                        addActor(ActorUtil.getInstance().getNewAsteroid());
+        Optional<StarShip> starShip = ServiceUtil.findActorOnStage(this, StarShip.class);
+        Array<Asteroid> asteroids = ServiceUtil.findAllActorsOnStage(this, Asteroid.class);
+        Array<Bullet> bullets = ServiceUtil.findAllActorsOnStage(this, Bullet.class);
+        starShip.filter(s -> {
+            Array<Asteroid> destroyedAsteroids = new Array<>();
+            Array<Bullet> destroyedBullets = new Array<>();
+            Optional<StarShip> destroyedStarShip = Optional.empty();
+            for (Asteroid asteroid : asteroids) {
+                if (tryStarShipCollision(s, asteroid)) {
+                    destroyedAsteroids.add(asteroid);
+                    destroyedStarShip = Optional.of(s);
+                }
+                for (Bullet bullet : bullets) {
+                    if (tryBulletCollision(bullet, asteroid)) {
+                        destroyedAsteroids.add(asteroid);
+                        destroyedBullets.add(bullet);
                     }
-                    getActors().iterator().forEach(aa -> {
-                        if (aa instanceof Bullet) {
-                            MovableMaterial mm3 = ((MovableMaterial) ((Bullet) aa).getChildren().get(1));
-                            if (mm3.getCollider().overlaps(mm2.getCollider())) {
-                                if (actors.size > finalI) {
-                                    actors.get(finalI).remove();
-                                    aa.remove();
-                                    addActor(ActorUtil.getInstance().getNewAsteroid());
-                                    Long score = Cache.getInstance().getLong(SCORE);
-                                    Cache.getInstance().setLong(SCORE, score + 500L);
-                                }
-                            }
-                        }
-                    });
                 }
             }
-        }
-        if (isStarShipDestroyed) {
-            starShip.get().remove();
+            destroyedAsteroids.forEach(da -> {
+                da.remove();
+                addActor(ActorUtil.getInstance().getNewAsteroid());
+            });
+            destroyedBullets.forEach(Actor::remove);
+            return destroyedStarShip.isPresent();
+        }).ifPresent(s -> {
+            s.remove();
             addActor(ActorUtil.getInstance().getNewStarShip());
-        }
-        isStarShipDestroyed = false;
+        });
+        // for future commits
+//        tryIncreaseComplexity();
+//        for (int i = 0; i < maxAsteroids - asteroids.size; i++) {
+//            addActor(ActorUtil.getInstance().getNewAsteroid());
+//        }
     }
 
     private void restartGame() {
         Cache.getInstance().setLong(HEALTH, 3L);
         Cache.getInstance().setLong(SCORE, 0L);
+    }
+
+    private boolean tryStarShipCollision(MovableSpriteActor a1, MovableSpriteActor a2) {
+        if (a1.getCollider().overlaps(a2.getCollider())) {
+            long health = Cache.getInstance().getLong(HEALTH) - 1L;
+            if (health <= 0L) {
+                restartGame();
+            } else {
+                Cache.getInstance().setLong(HEALTH, health);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean tryBulletCollision(MovableSpriteActor a1, MovableSpriteActor a2) {
+        if (a1.getCollider().overlaps(a2.getCollider())) {
+            Long score = Cache.getInstance().getLong(SCORE);
+            Cache.getInstance().setLong(SCORE, score + 500L);
+            return true;
+        }
+        return false;
+    }
+
+    private void tryIncreaseComplexity() {
+        maxAsteroids += Cache.getInstance().getLong(SCORE) / COMPLEXITY_LEVEL;
     }
 
     private InputListener initAndGetUserInputListener() {
