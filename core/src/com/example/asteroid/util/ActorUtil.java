@@ -43,8 +43,8 @@ public final class ActorUtil {
         return starShip;
     }
 
-    public Asteroid getNewAsteroid() {
-        return new Asteroid(40f, 20f, 1f, MathUtils.random(190, 200));
+    public Asteroid getNewAsteroid(Vector2 starShipCoordinates, Vector2 starShipSize) {
+        return new Asteroid(starShipCoordinates, starShipSize, 40f, 20f, 1f, MathUtils.random(190, 200));
     }
 
     public Bullet getNewBullet(Vector2 targetPosition, Vector2 position) {

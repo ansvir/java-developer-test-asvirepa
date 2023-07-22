@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         AssetUtil.getInstance().getTiledMapRenderer().setView(ActorUtil.getInstance().getGameCamera());
-        GAME_STAGE.addActor(ActorUtil.getInstance().getNewStarShip());
         Gdx.input.setInputProcessor(GAME_STAGE);
     }
 

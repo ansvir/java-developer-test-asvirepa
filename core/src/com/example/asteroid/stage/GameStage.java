@@ -41,8 +41,11 @@ public class GameStage extends Stage {
         this.mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         this.touchDownPosition = new Vector2();
         this.maxAsteroids = 3;
+        StarShip starShip = ActorUtil.getInstance().getNewStarShip();
+        addActor(starShip);
         for (int i = 0; i < maxAsteroids; i++) {
-            addActor(ActorUtil.getInstance().getNewAsteroid());
+            addActor(ActorUtil.getInstance().getNewAsteroid(new Vector2(starShip.getX(), starShip.getY()),
+                    new Vector2(starShip.getWidth(), starShip.getHeight())));
         }
         addListener(initAndGetUserInputListener());
     }
@@ -71,7 +74,8 @@ public class GameStage extends Stage {
             }
             destroyedAsteroids.forEach(da -> {
                 da.remove();
-                addActor(ActorUtil.getInstance().getNewAsteroid());
+                addActor(ActorUtil.getInstance().getNewAsteroid(new Vector2(s.getX(), s.getY()),
+                        new Vector2(s.getWidth(), s.getHeight())));
             });
             destroyedBullets.forEach(Actor::remove);
             return destroyedStarShip.isPresent();
