@@ -1,5 +1,6 @@
 package com.example.asteroid.stage;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -9,6 +10,8 @@ import com.example.asteroid.actor.Asteroid;
 import com.example.asteroid.actor.Bullet;
 import com.example.asteroid.actor.MovableSpriteActor;
 import com.example.asteroid.actor.StarShip;
+import com.example.asteroid.screen.GameOverScreen;
+import com.example.asteroid.screen.GameScreen;
 import com.example.asteroid.storage.Cache;
 import com.example.asteroid.util.ActorUtil;
 import com.example.asteroid.util.AssetUtil;
@@ -23,14 +26,17 @@ import static com.example.asteroid.AbstractConstant.SCORE;
 public class GameStage extends Stage {
 
     private static final int COMPLEXITY_LEVEL = 1500;
+
+    private final Game GAME;
     private final IntSet KEYS;
     private final Vector2 mousePosition;
     private final Vector2 touchDownPosition;
     private boolean isTouchDown;
     private int maxAsteroids;
 
-    public GameStage() {
+    public GameStage(Game game) {
         super(ActorUtil.getInstance().getGameViewport(), AssetUtil.getInstance().getSpriteBatch());
+        this.GAME = game;
         this.KEYS = new IntSet();
         this.mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         this.touchDownPosition = new Vector2();
@@ -81,8 +87,7 @@ public class GameStage extends Stage {
     }
 
     private void restartGame() {
-        Cache.getInstance().setLong(HEALTH, 3L);
-        Cache.getInstance().setLong(SCORE, 0L);
+        GAME.setScreen(new GameOverScreen(GAME));
     }
 
     private boolean tryStarShipCollision(MovableSpriteActor a1, MovableSpriteActor a2) {

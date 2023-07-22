@@ -18,6 +18,7 @@ Sub-Packages:
    At [bin](bin) folder executable JAR named `desktop-1.0.jar` will be generated
 ## Change Log
 1) Refactor code: extract code duplication to separate methods, remove extra Actor's classes and make all Actor's inherit common MovableSpriteActor. Add ServiceUtil class to handle search for actors within Stage
+2) Additional screens: add menu screen and game over screen. Add according custom stages
 # [RUS] Базовая версия игры Asteroid версии 1.0
 ## [Исходное задание](./Game_Developer_тестовое_задание(1)(1).pdf)
 ## [Github репозиторий](https://github.com/ansvir/java-developer-test-asvirepa)
