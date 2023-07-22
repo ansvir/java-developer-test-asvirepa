@@ -5,6 +5,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Game enemy that moves in spontaneous direction and serves as a obstacle for player. Has speed and direction, after
+ * colliding with it player lose his health
+ */
 public class Asteroid extends MovableSpriteActor {
 
     private final boolean rotateClockwise;

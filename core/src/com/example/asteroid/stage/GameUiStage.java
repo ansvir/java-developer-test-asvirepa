@@ -9,6 +9,9 @@ import com.example.asteroid.util.AssetUtil;
 import static com.example.asteroid.AbstractConstant.HEALTH;
 import static com.example.asteroid.AbstractConstant.SCORE;
 
+/**
+ * {@link UiStage} that is responsible for processing game actions
+ */
 public class GameUiStage extends UiStage {
 
     private final Label LIFE_LABEL;

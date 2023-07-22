@@ -11,6 +11,9 @@ import com.example.asteroid.util.AssetUtil;
 
 import static com.badlogic.gdx.utils.Align.center;
 
+/**
+ * {@link UiStage} that responsible for processing menu actions
+ */
 public class MenuUiStage extends UiStage {
 
     private final Game GAME;

@@ -23,6 +23,9 @@ import static com.badlogic.gdx.Input.Buttons.LEFT;
 import static com.example.asteroid.AbstractConstant.HEALTH;
 import static com.example.asteroid.AbstractConstant.SCORE;
 
+/**
+ * Game stage that is responsible for managing game state and replies to game events
+ */
 public class GameStage extends Stage {
 
     private static final int COMPLEXITY_LEVEL = 1500;

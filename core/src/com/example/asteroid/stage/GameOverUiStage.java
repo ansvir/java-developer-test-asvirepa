@@ -11,6 +11,9 @@ import com.example.asteroid.util.AssetUtil;
 
 import static com.badlogic.gdx.utils.Align.center;
 
+/**
+ * {@link UiStage} that is responsible for process events and display {@link com.example.asteroid.screen.GameOverScreen}
+ */
 public class GameOverUiStage extends UiStage {
 
     private final Game GAME;

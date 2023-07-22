@@ -8,6 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.example.asteroid.util.AssetUtil;
 
+/**
+ * Actor that holds moving behaviour of actor and sprite to display.
+ * Contains movement measurements, like direction or velocity.
+ * Contains sprite that will be drawn.
+ * Contains base methods {@link MovableSpriteActor#updatePosition(float)}, {@link MovableSpriteActor#relocateIfAtEdge()} and
+ * other to manage actor behaviour.
+ */
 public class MovableSpriteActor extends Group {
 
     private float maxSpeed;

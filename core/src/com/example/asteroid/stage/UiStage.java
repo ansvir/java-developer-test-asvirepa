@@ -3,6 +3,9 @@ package com.example.asteroid.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+/**
+ * Abstract user interface stage implementation. Defines base behaviour and state for all UI stages
+ */
 public abstract class UiStage extends Stage {
 
     protected static final float PAD_X = 20f;

@@ -3,6 +3,9 @@ package com.example.asteroid.actor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Bullet actor that represents shoot event result, has target and destroy condition
+ */
 public class Bullet extends MovableSpriteActor {
 
     public Bullet(Vector2 targetPosition, Vector2 position, float maxSpeed, float acceleration, float deceleration, int spriteIndex) {

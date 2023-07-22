@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -19,6 +19,10 @@ import com.badlogic.gdx.utils.Disposable;
 import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_HEIGHT;
 import static com.example.asteroid.AbstractConstant.BACKGROUND_TILE_WIDTH;
 
+/**
+ * Class that defines basic assets operations, such as initializing and provides access to these assets
+ * Build as singleton to avoid assets duplication and memory leak
+ */
 public final class AssetUtil implements Disposable {
 
     private static AssetUtil instance;
@@ -125,6 +129,9 @@ public final class AssetUtil implements Disposable {
         return this.DEFAULT_SKIN;
     }
 
+    /**
+     * Method that used to update the whole background tiled map
+     */
     public void updateBackgroundTileMap() {
         BACKGROUND_TILESET = initAndGetBackgroundTiledMapTileSet();
         BACKGROUND_LAYER = initAndGetBackgroundLayer();

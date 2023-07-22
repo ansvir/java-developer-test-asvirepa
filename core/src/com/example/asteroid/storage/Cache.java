@@ -3,6 +3,10 @@ package com.example.asteroid.storage;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Game cache based on {@link HashMap} with basic operations like put and get. Keys usually stored at
+ * {@link com.example.asteroid.AbstractConstant} class.
+ */
 public class Cache {
 
     private final Map<String, Object> CACHE;

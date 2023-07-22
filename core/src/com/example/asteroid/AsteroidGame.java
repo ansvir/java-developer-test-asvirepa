@@ -6,6 +6,9 @@ import com.example.asteroid.screen.MenuScreen;
 import com.example.asteroid.util.ActorUtil;
 import com.example.asteroid.util.AssetUtil;
 
+/**
+ * Game entrance point class
+ */
 public class AsteroidGame extends Game {
 	
 	@Override

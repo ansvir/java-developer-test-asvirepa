@@ -6,6 +6,9 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Optional;
 
+/**
+ * Generic purpose service utility class that basically used to operate over actors on stage
+ */
 public final class ServiceUtil {
 
     /**

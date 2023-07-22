@@ -2,17 +2,19 @@ package com.example.asteroid.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.IntSet;
 import com.example.asteroid.stage.GameStage;
 import com.example.asteroid.util.ActorUtil;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
-import static com.badlogic.gdx.Input.Keys.*;
+import static com.badlogic.gdx.Input.Keys.D;
+import static com.badlogic.gdx.Input.Keys.W;
 
+/**
+ * Player managed actor. Has input processor for keys and mouse, mouse clicks.
+ */
 public class StarShip extends MovableSpriteActor {
 
     private Vector2 lastMousePosition;
